@@ -1,0 +1,56 @@
+
+{% extends "base.html" %}
+
+{% block title %}Book Appointment{% endblock %}
+
+{% block content %}
+
+<div class="card" style="max-width:600px;margin:auto;">
+
+    <h1>Book an Appointment</h1>
+
+    <form method="POST"
+          action="{{ url_for('book_appointment') }}">
+
+        <input type="hidden"
+               name="csrf_token"
+               value="{{ csrf_token() }}">
+
+        <label>Select Doctor</label>
+
+        <select name="doctor_name" required>
+
+            <option value="">-- Choose Doctor --</option>
+
+            {% for doctor in doctors %}
+
+            <option value="{{ doctor.name }}">
+                {{ doctor.name }} - {{ doctor.speciality }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <label>Appointment Date</label>
+
+        <input type="date"
+               name="appointment_date"
+               min="{{ today }}"
+               required>
+
+        <label>Appointment Time</label>
+
+        <input type="time"
+               name="appointment_time"
+               required>
+
+        <button class="btn" type="submit">
+            Submit Appointment
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

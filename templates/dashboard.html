@@ -1,0 +1,71 @@
+
+{% extends "base.html" %}
+
+{% block title %}Patient Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+    <h1>Welcome, {{ patient_name }}</h1>
+
+    <p>
+        From here you can book a new appointment
+        and check your appointment requests.
+    </p>
+
+    <a class="btn"
+       href="{{ url_for('book_appointment') }}">
+        Book Appointment
+    </a>
+
+    <a class="btn btn-secondary"
+       href="{{ url_for('my_appointments') }}">
+        My Appointments
+    </a>
+
+</div>
+
+<div class="card">
+
+    <h2>Recent Appointments</h2>
+
+    {% if appointments %}
+
+    <div class="table-wrap">
+
+        <table>
+
+            <tr>
+                <th>ID</th>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+            </tr>
+
+            {% for a in appointments %}
+
+            <tr>
+                <td>{{ a.id }}</td>
+                <td>{{ a.doctor_name }}</td>
+                <td>{{ a.appointment_date }}</td>
+                <td>{{ a.appointment_time }}</td>
+                <td>{{ a.status|title }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <p>You have not booked any appointments yet.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Patients</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f8fb;
+        }
+
+        header {
+            background: #173b65;
+            color: white;
+            text-align: center;
+            padding: 18px;
+        }
+
+        .container {
+            width: 95%;
+            margin: 25px auto;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 650px;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #173b65;
+            color: white;
+        }
+
+        button {
+            background: #c0392b;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            padding: 10px;
+            width: 220px;
+            max-width: 65%;
+        }
+
+        .search-box button {
+            background: #173b65;
+        }
+
+        a {
+            color: #173b65;
+            text-decoration: none;
+        }
+
+        .back {
+            display: inline-block;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Manage Patients</h1>
+</header>
+
+<div class="container">
+
+    <form method="GET" action="{{ url_for('patients') }}"
+          class="search-box">
+
+        <input type="text"
+               name="search"
+               placeholder="Search patient name"
+               value="{{ search or '' }}">
+
+        <button type="submit">Search</button>
+
+    </form>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Details</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for p in patients %}
+
+            <tr>
+                <td>{{ p[0] }}</td>
+                <td>{{ p[1] }}</td>
+                <td>{{ p[2] }}</td>
+                <td>{{ p[3] }}</td>
+
+                <td>
+                    <a href="{{ url_for('patient_details', patient_id=p[0]) }}">
+                        View Details
+                    </a>
+                </td>
+
+                <td>
+
+                    <form method="POST"
+                          action="{{ url_for('delete_patient', patient_id=p[0]) }}"
+                          onsubmit="return confirm('Are you sure you want to delete this patient?');">
+
+                        <input type="hidden" name="csrf_token"
+                               value="{{ csrf_token }}">
+
+                        <button type="submit">Delete</button>
+
+                    </form>
+
+                </td>
+            </tr>
+
+        {% else %}
+
+            <tr>
+                <td colspan="6">No patients found.</td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    <a class="back" href="{{ url_for('admin') }}">
+        Back to Admin Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Appointments</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f8fb;
+        }
+
+        header {
+            background: #173b65;
+            color: white;
+            text-align: center;
+            padding: 18px;
+        }
+
+        .container {
+            width: 95%;
+            margin: 25px auto;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 750px;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #173b65;
+            color: white;
+        }
+
+        button {
+            padding: 7px 10px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            margin: 3px;
+        }
+
+        .confirm {
+            background: #218838;
+        }
+
+        .cancel {
+            background: #c0392b;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            padding: 10px;
+            width: 220px;
+            max-width: 65%;
+        }
+
+        .search-box button {
+            background: #173b65;
+            padding: 10px 15px;
+        }
+
+        a {
+            color: #173b65;
+            text-decoration: none;
+        }
+
+        .back {
+            display: inline-block;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Manage Appointments</h1>
+</header>
+
+<div class="container">
+
+    <form method="GET" action="{{ url_for('appointments') }}"
+          class="search-box">
+
+        <input type="text"
+               name="search"
+               placeholder="Search patient name"
+               value="{{ search or '' }}">
+
+        <button type="submit">Search</button>
+
+    </form>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Patient Name</th>
+                <th>Doctor Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for a in appointments %}
+
+            <tr>
+                <td>{{ a[0] }}</td>
+                <td>{{ a[1] }}</td>
+                <td>{{ a[2] }}</td>
+                <td>{{ a[3] }}</td>
+                <td>{{ a[4] }}</td>
+                <td>{{ a[5] }}</td>
+
+                <td>
+
+                    {% if a[5] == 'pending' %}
+
+                    <form method="POST"
+                          action="{{ url_for('confirm_appointment', appointment_id=a[0]) }}"
+                          style="display:inline;">
+
+                        <input type="hidden" name="csrf_token"
+                               value="{{ csrf_token }}">
+
+                        <button class="confirm" type="submit">
+                            Confirm
+                        </button>
+                    </form>
+
+                    {% endif %}
+
+                    {% if a[5] != 'cancelled' %}
+
+                    <form method="POST"
+                          action="{{ url_for('admin_cancel_appointment', appointment_id=a[0]) }}"
+                          style="display:inline;">
+
+                        <input type="hidden" name="csrf_token"
+                               value="{{ csrf_token }}">
+
+                        <button class="cancel" type="submit">
+                            Cancel
+                        </button>
+                    </form>
+
+                    {% endif %}
+
+                </td>
+            </tr>
+
+        {% else %}
+
+            <tr>
+                <td colspan="7">No appointments found.</td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    <a class="back" href="{{ url_for('admin') }}">
+        Back to Admin Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>

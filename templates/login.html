@@ -1,0 +1,48 @@
+
+{% extends "base.html" %}
+
+{% block title %}Patient Login{% endblock %}
+
+{% block content %}
+
+<div class="card" style="max-width:480px;margin:auto;">
+
+    <h1>Patient Login</h1>
+
+    <form method="POST"
+          action="{{ url_for('login') }}">
+
+        <input type="hidden"
+               name="csrf_token"
+               value="{{ csrf_token() }}">
+
+        <label>Email</label>
+
+        <input type="email"
+               name="email"
+               placeholder="Enter registered email"
+               required>
+
+        <label>Password</label>
+
+        <input type="password"
+               name="password"
+               placeholder="Enter password"
+               required>
+
+        <button class="btn" type="submit">
+            Login
+        </button>
+
+    </form>
+
+    <p>
+        New patient?
+        <a href="{{ url_for('register') }}">
+            Create an account
+        </a>.
+    </p>
+
+</div>
+
+{% endblock %}

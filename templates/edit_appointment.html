@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reschedule Appointment</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f0f5fa;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 450px;
+            margin: 60px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px #00000015;
+        }
+
+        h2 {
+            text-align: center;
+            color: #087eaa;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            background: #087eaa;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .back {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        a { color: #087eaa; }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Reschedule Appointment</h2>
+
+    <p><strong>Doctor:</strong> {{ appointment[1] }}</p>
+
+    <p><strong>Current Date:</strong> {{ appointment[2] }}</p>
+
+    <p><strong>Current Time:</strong> {{ appointment[3] }}</p>
+
+    <form method="POST"
+          action="{{ url_for('edit_appointment', appointment_id=appointment[0]) }}">
+
+        <input type="hidden" name="csrf_token"
+               value="{{ csrf_token }}">
+
+        <label>New Appointment Date</label>
+
+        <input type="date"
+               name="appointment_date"
+               min="{{ today }}"
+               value="{{ appointment[2] }}"
+               required>
+
+        <label>New Appointment Time</label>
+
+        <input type="time"
+               name="appointment_time"
+               value="{{ appointment[3] }}"
+               required>
+
+        <button type="submit">
+            Update Appointment
+        </button>
+
+    </form>
+
+    <div class="back">
+        <a href="{{ url_for('my_appointments') }}">
+            Back to My Appointments
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

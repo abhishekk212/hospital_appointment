@@ -1,0 +1,48 @@
+
+{% extends "base.html" %}
+
+{% block title %}Doctors{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+    <h1>Our Doctors</h1>
+
+    <p>Select a doctor while booking your appointment.</p>
+
+    <div class="grid">
+
+        {% for doctor in doctors %}
+
+        <div class="card">
+
+            <h2>👨‍⚕️ {{ doctor.name }}</h2>
+
+            <p>{{ doctor.speciality }}</p>
+
+            {% if session.get('patient_id') %}
+
+                <a class="btn"
+                   href="{{ url_for('book_appointment') }}">
+                    Book Appointment
+                </a>
+
+            {% else %}
+
+                <a class="btn"
+                   href="{{ url_for('login') }}">
+                    Login to Book
+                </a>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

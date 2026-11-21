@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Details</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f8fb;
+        }
+
+        header {
+            background: #173b65;
+            color: white;
+            text-align: center;
+            padding: 18px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 25px auto;
+        }
+
+        .details, .appointments {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px #ddd;
+        }
+
+        h2 {
+            color: #173b65;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #173b65;
+            color: white;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            color: #173b65;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Patient Details</h1>
+</header>
+
+<div class="container">
+
+    <div class="details">
+
+        <h2>Patient Information</h2>
+
+        <p><strong>Patient ID:</strong> {{ patient[0] }}</p>
+        <p><strong>Name:</strong> {{ patient[1] }}</p>
+        <p><strong>Email:</strong> {{ patient[2] }}</p>
+        <p><strong>Phone:</strong> {{ patient[3] }}</p>
+
+    </div>
+
+    <div class="appointments">
+
+        <h2>Appointment History</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Doctor</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for a in appointments %}
+
+                <tr>
+                    <td>{{ a[0] }}</td>
+                    <td>{{ a[1] }}</td>
+                    <td>{{ a[2] }}</td>
+                    <td>{{ a[3] }}</td>
+                </tr>
+
+            {% else %}
+
+                <tr>
+                    <td colspan="4">No appointment history found.</td>
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <a href="{{ url_for('patients') }}">Back to Patients</a>
+
+</div>
+
+</body>
+</html>
